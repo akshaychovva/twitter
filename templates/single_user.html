@@ -1,0 +1,82 @@
+{% extends 'index.html' %}
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #d34545;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        color: #333;
+        text-align: center;
+    }
+
+    .user-info {
+        margin-bottom: 20px;
+    }
+
+    p {
+        margin: 5px 0;
+        color: #555;
+    }
+
+    button {
+        background-color: #3498db;
+        color: #fff;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #2980b9;
+    }
+</style>
+
+{% block content %}
+
+<div class="container">
+    <h1>User Profile</h1>
+
+    <div class="user-info">
+        <p>Username: {{ user.username }}</p>
+        <p>Email: {{ user.email }}</p>
+        <p>Created At: {{ user.created_at }}</p>
+        <p>Following: {{ follow_nums }}</p>
+        {% for follow in follows %}
+            <p>{{ follow }}</p>
+        {% endfor %}
+        <p>Followers: {{ following_nums }}</p>
+        {% for following in followings %}
+            <p>{{ following }}</p>
+        {% endfor %}
+    </div>
+
+    {% if user != request.user %}
+        <form action="" method="POST">
+            {% csrf_token %}
+            {% if user.profiles in request.user.profiles.follows.all %}
+                <button name="follow_button" value="unfollow">Unfollow</button>
+            {% elif user.profiles in request.user.profiles.friend_request.all %}
+                <button name="follow_button" value="requested">Requested</button>
+            {% else %}
+                <button name="follow_button" value="follow">Follow</button>
+            {% endif %}
+        </form>
+    {% endif %}
+
+</div>
+
+{% endblock content %}

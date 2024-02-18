@@ -1,0 +1,22 @@
+
+{% if not message %}
+
+<a href="{% url 'user_name:login_user' %}"><button type="submit">Login</button></a>
+<a href="{% url 'user_name:register_user' %}"><button type="submit">Register</button></a>
+{% endif %}
+
+
+{% if message == 'register'%}
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">Submit</button>
+    </form>
+{% elif message == 'login'%}
+<form action="" method="POST">
+    {% csrf_token %}
+    Email: <input type="text" name="email"><br>
+    Password: <input type="text" name="password"><br>
+    <button type="submit">Submit</button>
+</form>
+{% endif %}

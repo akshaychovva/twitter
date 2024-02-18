@@ -1,0 +1,29 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div style="width: 30%; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+    {% for friend_to_add in friend_requests %}
+    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+        <div style="width: 30%; border-right: 1px solid #ccc; padding-right: 10px;">
+            {{ friend_to_add }}
+        </div>
+        <div style="width: 15%;">
+            <form method="POST" action="{% url 'user_name:friend_requests' friend_to_add.id %}">
+                {% csrf_token %}
+                <input type="submit" style="width: 100%;" name="value" value="Accept">
+            </form>
+        </div>
+        <div style="width: 15%;">
+            <form method="POST" action="{% url 'user_name:friend_requests' friend_to_add.id %}">
+                {% csrf_token %}
+                <input type="submit" style="width: 100%;" name="value" value="Reject">
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+
+{% endblock content %}

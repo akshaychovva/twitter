@@ -1,0 +1,49 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div style="display: flex; justify-content: space-between; max-width: 800px; margin: 20px auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+    <div style="width: 48%;">
+        <h1 style="color: #333; text-align: center;">My Friends</h1>
+
+        {% for friend in my_friends %}
+            <div style="background-color: #f5f5f5; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+                <div>
+                    <a href="{% url 'user_name:userprofile' friend.user.id %}"><p>Username: {{ friend.user.username }}</p></a>
+                    
+                    <p>Email: {{ friend.user }}</p>
+                    <p>Created At: {{ friend.user.created_at }}</p>
+                    <form action="{% url 'add_friend' friend.id  %}" method="POST">
+                        {% csrf_token %}
+                        <button name="follow_button" value="unfollow">UnFollow</button>
+                    </form>
+                    
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div style="width: 48%;">
+        <h1 style="color: #333; text-align: center;">Friends to Add</h1>
+
+        {% for friend_to_add in friends_to_add %}
+            <div style="background-color: #f5f5f5; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+                <div>
+                    <a href="{% url 'user_name:userprofile' friend_to_add.user.id %}"><p>Username: {{ friend_to_add.user.username }}</p></a>
+                    <p>Created At: {{ friend_to_add.user.created_at }}</p>
+                    <!-- Additional friend information as needed -->
+                    <form action="{% url 'add_friend' friend_to_add.id  %}" method="POST">
+                        {% csrf_token %}
+                        {% if friend_to_add in request.user.profiles.friend_request.all %}
+                        <button name="follow_button" value="requested">Requested</button>
+                        {% else %}
+                        <button name="follow_button" value="follow">Follow</button>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

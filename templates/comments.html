@@ -1,0 +1,43 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<br>
+<br>
+<form action="" method="POST">
+    {% csrf_token %}
+    {% for field in form  %}
+    {{field}}
+    <br>
+    {% endfor %}
+    <br>
+    {% if message %}
+    <button type="submit" name="value" value="Update" >Update Comment</button>
+    <button type="submit" name="value" value="Delete">Delete Comment</button>
+    {% else %}
+    <button type="submit">Add Comment</button>
+    {% endif %}
+</form>
+
+<h2 style="color: #333; margin-top: 20px;">Comments</h2>
+    <ul style="list-style: none; padding: 0; margin: 0;">
+    {% for comment in comments %}
+      <li style="background-color: #f0f0f0; padding: 10px; margin-bottom: 10px;">
+        <a href="">{{comment.user}}</a> <br>
+        <strong>{{comment.body}}</strong><br>
+        <form action="{% url 'update_comment' comment.id %}">
+        {% if request.user == comment.user %}
+            <button type="submit" >Edit or Delete</button>
+        {% endif %} <br>
+        </form>
+        <form action="{% url 'like_comment' comment.id %}" method="POST">
+          {% csrf_token %}
+          {% if request.user.profiles in comment.like_comment.all %}
+          <input type="submit" name="like_value" value="Liked" class="like-button" style="background-color: #28e37c; color: #fff;">
+          {% else %}
+          <input type="submit" name="like_value" value="Unliked" class="like-button" style="background-color: #5c605c; color: #fff;">
+          {% endif %}
+        </form>
+        <strong>{{dweet.created}}</strong>  
+      </li>
+      {% endfor %}
+    {% endblock content %}

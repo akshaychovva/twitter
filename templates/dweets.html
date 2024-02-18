@@ -1,0 +1,82 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<br>
+<br>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tweet and Friends Page</title>
+</head>
+<div style="margin: 0; padding: 0; font-family: 'Arial', sans-serif; display: flex;">
+
+  <div style="flex-basis: 70%; background-color: #e6f7ff; padding: 20px;">
+    <h1 style="color: #333;">Dweets</h1>
+    <form action="" method="POST">
+    {% csrf_token %}
+
+    {% for field in form %}
+    {{ field }}
+    {% endfor %}
+    <br>
+    {% if message %}
+    <button type="submit" name="value" value="Update" >Update Dweet</button>
+    <button type="submit" name="value" value="Delete">Delete Dweet</button>
+    {% else %}
+    <button type="submit">Add Dweet</button>
+    {% endif %}
+    </form>
+
+  
+
+
+    <h2 style="color: #333; margin-top: 20px;">Dweets List</h2>
+    <ul style="list-style: none; padding: 0; margin: 0;">
+    {% for dweet in dweets %}
+    {% if dweet.user.profiles in user.profiles.follows.all %}
+      <li style="background-color: #f0f0f0; padding: 10px; margin-bottom: 10px;">
+        <a href="{% url 'user_name:userprofile' dweet.user.id %}">{{dweet.user}}</a> <br>
+        <a href="{% url 'comment' dweet.id %}"><strong>{{dweet.body}}</strong> </a><br>
+        <form action="{% url 'update_dweet' dweet.id %}">
+        {% if request.user == dweet.user %}
+            <button type="submit" >Edit or Delete</button>
+        {% endif %} <br>
+        </form>
+        <form action="{% url 'like' pk=dweet.id %}" method="POST">
+          {% csrf_token %}
+          {% if request.user.profiles in dweet.like.all %}
+          <input type="submit" name="like_value" value="Liked" class="like-button" style="background-color: #28e37c; color: #fff;">
+          {% else %}
+          <input type="submit" name="like_value" value="Unliked" class="like-button" style="background-color: #5c605c; color: #fff;">
+          {% endif %}
+        </form>
+        <strong>{{dweet.created}}</strong>  
+      </li>
+      {% endif %}
+      {% endfor %}
+   
+  </div>
+
+  <div style="flex-basis: 30%; background-color: #ffe6cc; padding: 20px;">
+    <h1 style="color: #333;">Add Friends</h1>
+    <ul style="list-style: none; padding: 0; margin: 0;">
+      {% for add_friend in add_friends %}
+      <a href="{% url 'user_name:userprofile' add_friend.profiles.user.id %}"><li style="background-color: #f0f0f0; padding: 10px; margin-bottom: 10px;">{{add_friend}}</li></a>
+      
+      {% endfor %}
+    </ul>
+  </div>
+
+</div>
+</html>
+
+
+
+   
+
+
+{% endblock %}
