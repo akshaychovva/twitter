@@ -76,6 +76,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'twitter.wsgi.application'
 
+# LOGIN_URL = 'users/login_or_reg'
+
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
