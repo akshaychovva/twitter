@@ -10,7 +10,7 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-CMD gunicorn redis_project.wsgi:application --bind 0.0.0.0:8000
+CMD gunicorn twitter.wsgi:application --bind 0.0.0.0:8000
 
 EXPOSE 8000
 

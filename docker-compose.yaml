@@ -1,5 +1,6 @@
 version: "3.13"
-  app:
+services:
+  web:
     build: .
     volumes:
       - .:/django
@@ -7,4 +8,4 @@ version: "3.13"
       - 8000:8000
     image: application:django
     container_name: app_container
-    command: gunicorn redis_project.wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn twitter.wsgi:application --bind 0.0.0.0:8000

@@ -3,6 +3,7 @@ from .models import UserProfile
 from .forms import CustomUserCreation, LoginForm
 from django.contrib.auth import authenticate, login, logout
 
+
 def show_users(request):
     users = UserProfile.objects.all()
     context = {'users': users}
@@ -36,7 +37,6 @@ def friend_requests(request, pk=None):
             request.user.profiles.requested_by.remove(friend_to_add_profile.profiles)
         else:
             request.user.profiles.requested_by.remove(friend_to_add_profile.profiles)
-            print(request.user.profiles.requested_by.all())
     context = {'friend_requests': friend_requests}
     return render(request, 'friend_request.html', context)
 

@@ -4,7 +4,10 @@ from .forms import DweetForm
 from twitterapp.models import UserProfile
 from django.db.models import Q
 from profileapp.models import Profiles
+from django.contrib.auth.decorators import login_required
 
+
+@login_required(login_url="users/login_or_reg")
 def show_dweet(request):
     '''
     showing dweets and adding dweets, and showing new friends
